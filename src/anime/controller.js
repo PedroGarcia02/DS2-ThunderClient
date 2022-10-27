@@ -9,7 +9,7 @@ class AnimeController {
     async cadastrar(req, res) {
         const { nome, produtora } =  req.body;
         const animacao = {
-            nome, produtora, usuarioEmail: "123"
+            nome, produtora, usuarioEmail: req.user.email
         };
         const animeId = await this.repository.save(animacao);
         const eps = {
