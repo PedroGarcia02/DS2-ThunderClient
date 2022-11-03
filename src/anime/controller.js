@@ -38,31 +38,31 @@ class AnimeController {
     async update(req, res) {
         const { id } = req.params;
         const anime = await this.repository.find(id);
-        if (anime) {
+        if (anime && req.user.email == anime.usuarioEmail) {
             try {
                 const response = await this.repository.put(id, req.body);
                 return res.json(response);
             } catch(e){
                 res.status(400);
                 console.error(e);
-                return res.json({ message: "Body inválido" });
+                return res.json({ message: "Body inválido ou Sem autorização" });
             }
             
         } else {
             res.status(404);
-            return res.json({ message: "Objeto não encontrado" });
+            return res.json({ message: "Objeto não encontrado ou Sem autorização" });
         }
     }
 
     async delete(req, res) {
         const { id } = req.params;
         const anime = await this.repository.find(id);
-        if (anime) {
+        if (anime && req.user.email == anime.usuarioEmail) {
             await this.repository.delete(id);
             return res.json();
         } else {
             res.status(404);
-            return res.json({ message: "Objeto não encontrado" });
+            return res.json({ message: "Objeto não encontrado ou Sem autorização" });
         }
     }
 
